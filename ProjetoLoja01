@@ -145,7 +145,7 @@ def mostrar_lista(lista):
             if q <= len(lista)- 1 and q >=0:
                 return lista[q]
             else:
-                print(f"❌ Entrada inválida. Digite um número entre 0 e {len(lista - 1)}")
+                print(f"❌ Entrada inválida. Digite um número entre 0 e {len(lista) - 1}")
 
 
         except ValueError:
@@ -577,7 +577,8 @@ class Loja:
         while True:
             try:
                 qtd = int(input(f'Quantos {produto.nome} você deseja adicionar? '))
-                produto = Produto('Produto', qtd)
+                produto.quantidade = qtd
+                self.catalogo.append(produto)
                 self.catalogo.append(produto)
                 print(f' 👍 {produto.nome} adicionado! ')
                 sleep(1)
@@ -593,7 +594,7 @@ class Loja:
     def remover_produto(self, produto):
         while True:
             try:
-                self.catalogo.remove(self)
+                self.catalogo.remove(produto)
                 print(f' 👍 O {produto} foi removido do sistema!  ')
                 sleep(1)
                 historico_remocao(data(), produto.nome)
@@ -615,10 +616,10 @@ class Funcionario:
         self.senha = senha
 
     def adicionando(self, objeto):
-        l.adicionar_produto(objeto)
+        l.catalogo.append(objeto)
 
     def removendo(self, objeto):
-        l.remover_produto(objeto)
+        l.catalogo.remove(objeto)
 
 
 class Gerente:
