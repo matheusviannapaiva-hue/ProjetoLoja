@@ -1,0 +1,647 @@
+from time import sleep
+from datetime import datetime
+
+                                                # HISTÓRICOS
+
+Ha = []   # Histórico Adição
+Hr = []   # Histórico Remoção
+Hv = []   # Histórico de Vendas
+
+# FUNÇÕES
+def escolha_funcionarios(gerente, loja):
+    print('Gerenciando funcionários')
+    sleep(2)
+    while True:
+        try:
+            resposta = int(input('Deseja:  [ 1 ] Cadastrar   [ 2 ] Remover   [ 3 ] Voltar'))
+            if resposta == 1:
+                c = criar_funcionario()
+                l.lista_de_funcionarios.append(c)
+                gerente.cadastrar_funcionario(loja, c)
+                return
+            elif resposta == 2:
+                gerente.remover_funcionario(loja)
+                return
+            elif resposta == 3:
+                print('Voltando')
+                sleep(1)
+                return
+            else:
+                print(" ❌ Entrada inválida. Digite o número correto.")
+        except ValueError:
+            print("❌ Entrada inválida. Digite um número.")
+        except TypeError:
+            print("❌ Entrada inválida. Digite um número.")
+
+
+def escolha_gerente():
+    print('O que deseja fazer, gerente?')
+    print('[ 1 ] Produtos')
+    print('[ 2 ] Funcionários')
+    print('[ 3 ] Sair')
+    while True:
+        try:
+            resposta = int(input('Qual sua escolha? '))
+            if resposta == 1:
+                adicionar_ou_remover(l)
+                return
+            elif resposta == 2:
+                escolha_funcionarios(g, l)
+                return
+            elif resposta == 3:
+                print('Saindo')
+                sleep(1)
+                return
+            else:
+                print("❌ Entrada inválida. Digite o número correto.")
+        except ValueError:
+            print("❌ Entrada inválida. Digite um número.")
+        except TypeError:
+            print("❌ Entrada inválida. Digite um número.")
+
+
+def adicionar_ou_remover(loja):
+    print('         Deseja:')
+    while True:
+        try:
+            r = int(input('[ 1 ] Adicionar produto   [ 2 ] Remover produto   [ 3 ] Voltar '))
+            if r == 1:
+                n = criar_produto()
+
+                loja.catalogo.append(n)
+                return
+            elif r == 2:
+                if len(loja.catalogo) == 0:
+                    print('O catálogo da loja está vazio! ')
+                else:
+                    loja.remover_produto(mostrar_lista(loja.catalogo))
+                return
+            elif r == 3:
+                return
+            else:
+                print("❌ Entrada inválida. Digite um número correto!")
+
+        except ValueError:
+            print("❌ Entrada inválida. Digite um número.")
+        except TypeError:
+            print("❌ Entrada inválida. Digite um número.")
+
+
+def mostrar_posicao(lista):
+
+    '''
+
+    Args:
+        lista:
+
+    Returns: Irá retornar em qual localização da lista se encontra
+
+    '''
+    tot = 0
+    for objeto in lista:
+        print('=='*10)
+        print(f'{tot} - {objeto.nome}')
+        tot += 1
+    print('==' * 10)
+    while True:
+        try:
+            q = int(input('Digite um número!'))
+            if q <= len(lista)- 1 and q >=0:
+                return q
+            else:
+                print(f"❌ Entrada inválida. Digite um número entre 0 e {len(lista - 1)}")
+
+
+        except ValueError:
+            print("❌ Entrada inválida. Digite um número.")
+        except TypeError:
+            print("❌ Entrada inválida. Digite um número.")
+
+
+def adicionar(onde ,qtd):
+    n = l.catalogo[onde]
+    n.quantidade = qtd
+    return n
+
+
+def mostrar_lista(lista):
+    '''
+
+    Args:
+        lista:
+
+    Returns: Irá retornar o objeto dentro da lista (para ser utilizado posteriormente)
+
+    '''
+    tot = 0
+    for objeto in lista:
+        print('=='*10)
+        print(f'{tot} - {objeto.nome}')
+        tot += 1
+    print('==' * 10)
+    while True:
+        try:
+            q = int(input('Digite um número!'))
+            if q <= len(lista)- 1 and q >=0:
+                return lista[q]
+            else:
+                print(f"❌ Entrada inválida. Digite um número entre 0 e {len(lista - 1)}")
+
+
+        except ValueError:
+            print("❌ Entrada inválida. Digite um número.")
+        except TypeError:
+            print("❌ Entrada inválida. Digite um número.")
+
+
+def pagamento():
+    print('**'*20)
+    print('[ 1 ]  Débito')
+    print('[ 2 ]  Crédito')
+    print('[ 3 ]  Pix')
+    print('Como deseja realizar seu pagamento? ')
+    while True:
+        try:
+            h= int(input())
+            if h > 3 or h <1:
+                print("❌ Entrada inválida. Digite um número válido.")
+                if h == 1:
+                    print('Você selecionou a opção [ 1 ]')
+                    print('Pagamento efetuado!📦')
+                    sleep(2)
+                    return 'Débito'
+                    # Fica aqui um espaço para posteriormente adicionar funcionalidades acerca do pagamento
+                elif h == 2:
+                    print('Você selecionou a opção [ 2 ]')
+                    print('Pagamento efetuado!📦')
+                    sleep(2)
+                    print('Compra finalizada! ')
+                    return 'Crédito'
+                    # Fica aqui um espaço para posteriormente adicionar funcionalidades acerca do pagamento
+                elif h == 3:
+                    print('Você selecionou a opção [ 3 ]')
+                    print('Pagamento efetuado!📦')
+                    sleep(2)
+                    print('Compra finalizada! ')
+                    return 'Pix'
+                    # Fica aqui um espaço para posteriormente adicionar funcionalidades acerca do pagamento
+        except ValueError:
+            print("❌ Entrada inválida. Digite um número.")
+        except TypeError:
+            print("❌ Entrada inválida. Digite um número.")
+
+
+def finalizar_carrinho(carrinho):
+    total = 0
+    tot = 1
+    for produto in carrinho.lista_de_produtos:
+        print(f'{tot} - {produto.nome}....... Unidades: {produto.quantidade}')
+        total += produto.preco
+        tot += 1
+    print(f'Valor total: R$:{total}')
+    tot -= 1
+    return total
+
+
+def mostrar_carrinho(carrinho):
+    total = 0
+    tot = 1
+    for produto in carrinho.lista_de_produtos:
+
+        print(f'{tot} - {produto.nome}....... Unidades: {produto.quantidade}')
+        total += produto.preco
+        tot += 1
+    print(f'Valor total: R$:{total}')
+    tot -= 1
+    return tot
+
+
+def opcoes():
+    print('O que gostaria de fazer? ')
+    while True:
+        print('[ 1 ] Ver nossos produtos')
+        print('[ 2 ] Ver o carrinho')
+        print('[ 3 ] Efetuar compra')
+        print('[ 4 ] Sair da loja')
+        try:
+            r = int(input())
+
+            if r == 1:
+                return r
+
+            elif r == 2:
+                return r
+
+            elif r == 3:
+                return r
+
+            elif r == 4:
+                return r
+        except ValueError:
+            print('❌ Entrada inválida. Digite um número')
+
+        except TypeError:
+            print('❌ Entrada inválida. Digite um número')
+
+
+def verificador(loja, numeroprod):
+    '''
+
+    Args:
+        loja: Objeto tipo Loja
+        numeroprod: Valor localizado na lista
+
+    Returns:
+
+    '''
+    a = loja.catalogo[numeroprod]
+    print('O produto que você deseja adicionar é este?')
+    print(a.nome)
+    while True:
+        try:
+            f = int(input('[ 1 ] Sim  /  [ 2 ] Não'))
+            if f == 1:
+                return True
+
+            elif f == 2:
+                return False
+
+            else:
+                print("❌ Entrada inválida. Digite um número inteiro dentre as opções.")
+        except ValueError:
+            print("❌ Entrada inválida. Digite um número.")
+        except TypeError:
+            print("❌ Entrada inválida. Digite um número.")
+
+
+def opcao_cliente():
+    n = criar_cliente(listaclientes)
+    c = criar_carrinho()
+    while True:
+        escolha = opcoes()
+        if escolha == 1:
+            if len(l.catalogo) == 0:
+                print('O catálogo de produtos ainda está vazio, volte novamente outra hora!')
+            else:
+                posicao = mostrar_posicao(l.catalogo)
+                passa = verificador(l, posicao)
+                if passa:
+                    qtd = int(input('Quantas unidades? '))
+                    produto = adicionar(posicao, qtd)
+                    n.adicionar_ao_carrinho(c, produto, qtd)
+                else:
+                    print(' ❌ Ocorreu um erro, tente novamente!')
+
+        elif escolha == 2:
+            if len(c.lista_de_produtos) == 0:
+                print('Seu carrinho está vazio! ')
+            else:
+                mostrar_carrinho(c)
+                print('O que deseja fazer? [ 1 ] Remover produto    [ 2 ]  Voltar  ')
+                try:
+                    a = input('O que deseja fazer? [ 1 ] Remover produto    [ 2 ]  Voltar ')
+                    if a == 1:
+                        try:
+                            b = int(input('Qual desses produtos você deseja remover?  '))
+                            pr = c.lista_de_produtos[b]
+                            n.remover_do_carrinho(c, pr)
+                        except ValueError:
+                            print("❌ Entrada inválida. Digite um número.")
+
+                        except TypeError:
+                            print("❌ Entrada inválida. Digite um número.")
+                except ValueError:
+                    print("❌ Entrada inválida. Digite um número.")
+
+                except TypeError:
+                    print("❌ Entrada inválida. Digite um número.")
+
+        elif escolha == 3:
+            total = finalizar_carrinho(c)
+            if total == 0:
+                print('Para finalizar compra, adicione itens no seu carrinho!')
+            else:
+                tipo = pagamento()
+                resumo = [total, n.nome, tipo]
+                Hv.append(resumo)
+                c.lista_de_produtos.clear()
+
+        elif escolha == 4:
+            print('Finalizando!')
+            sleep(2)
+            return 'Obrigado e volte sempre!'
+        print('|='*20)
+
+
+def opcao_funcionario():
+    if len(l.lista_de_funcionarios) == 0:
+        return ' ❌ A lista de funcionários está vazia. Peça ao seu gerente para cadastrar alguém.'
+    else:
+        f = mostrar_lista(l.lista_de_funcionarios)
+        while True:
+            try:
+                print(f'O que deseja fazer, {f.nome}?')
+                adicionar_ou_remover(l)
+                opt = int(input('Deseja algo mais?  [ 1 ] SIM   [ 2 ] NÃO '))
+                if opt == 1:
+                    print('Okay!')
+                elif opt == 2:
+                    return 'Muito obrigado pelos seus serviços!'
+            except ValueError:
+                print("❌ Entrada inválida. Digite um número.")
+            except TypeError:
+                print("❌ Entrada inválida. Digite um número.")
+
+
+def opcao_gerente():
+    while True:
+        senha = int(input('Digite sua senha numérica'))
+        confirmar = g.senha
+        if senha != confirmar:
+            print(" ❌ Entrada inválida. Digite o número correto! ")
+            sleep(2)
+        else:
+            break
+    print('Bem vindo de volta, gerente! ')
+    while True:
+        try:
+            escolha_gerente()
+            d = int(input('Deseja sair?  [ 1 ] Sim   [ 2 ] Não '))
+            if d == 1:
+                return
+            elif d == 2:
+                print('Okay!')
+            else:
+                print(" ❌ Entrada inválida. Digite o número correto! ")
+        except ValueError:
+            print("❌ Entrada inválida. Digite um número.")
+        except TypeError:
+            print("❌ Entrada inválida. Digite um número.")
+
+
+def saudacao():
+    print('Seja muito bem-vindo!')
+    print()
+
+
+def funcionario_ou_cliente():
+    print('Você é um:')
+    print()
+    while True:
+        try:
+            q = int(input('[ 1 ] Cliente     [ 2 ] Funcionário   [ 3 ] Gerente  '))
+            if q == 1:
+                return 1
+            elif q == 2:
+                return 2
+            elif q == 3:
+                return 3
+            else:
+                print(" ❌ Entrada inválida. Digite um número válido.")
+
+        except ValueError:
+            print(" ❌ Entrada inválida. Digite um número.")
+
+        except TypeError:
+            print(" ❌ Entrada inválida. Digite um número.")
+
+
+def criar_cliente(lista):
+    nome = Cliente(input('Qual o seu nome? '))
+    lista.append(nome)
+    return nome
+
+
+def criar_carrinho():
+    carrinho = Carrinho()
+    return carrinho
+
+
+def criar_funcionario():
+    while True:
+        try:
+            nome = Funcionario(input('Qual o nome do funcionário? '), int(input('Qual sua senha? ')))
+            l.catalogo.append(nome)
+            return f' 👥 {nome.nome} adicionado! '
+        except ValueError:
+            print(" ❌ Entrada inválida. Digite um número.")
+
+        except TypeError:
+            print(" ❌ Entrada inválida. Digite um número.")
+
+
+def criar_produto():
+    while True:
+        try:
+            nome = Produto(input('Qual o nome do produto? '), float(input('Qual o preço do produto? ')))
+            l.catalogo.append(nome)
+            return f' 👥 {nome.nome} adicionado! '
+        except ValueError:
+            print(" ❌ Entrada inválida. Digite um número.")
+
+        except TypeError:
+            print(" ❌ Entrada inválida. Digite um número.")
+
+
+def menu():
+    while True:
+        saudacao()
+        q = funcionario_ou_cliente()
+        if q == 1:
+            opcao_cliente()
+            return 'Até logo!'
+        elif q == 2:
+            opcao_funcionario()
+            return 'Até logo!'
+        elif q == 3 :
+            opcao_gerente()
+            return 'Até logo!'
+
+
+def data():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def historico_adicao(A, B, C):
+    '''
+
+    Args:
+        A: Data
+        B: Produto
+        C: Quantidade
+
+    Returns:
+
+    '''
+    Ha.append(A)
+    Ha.append(B)
+    Ha.append(C)
+
+
+def historico_remocao(A, B):
+    '''
+
+    Args:
+        A: Data
+        B: Produto
+
+    Returns:
+
+    '''
+    Hr.append(A)
+    Hr.append(B)
+
+
+def historico_de_vendas(A ,B ,C ,D, E ):
+    '''
+
+    Args:
+        A: Data
+        B: Produto
+        C: Quantidade
+        D: Cliente
+        E: Valor
+    Returns:
+
+    '''
+    Hv.append(A)
+    Hv.append(B)
+    Hv.append(C)
+    Hv.append(D)
+    Hv.append(E)
+
+
+                                                    # CLASSES
+
+class Produto:
+    def __init__(self, nome = '<desconhecido>', preco = 0.0):
+        self.nome = nome
+        self.preco = preco
+        self.quantidade = 1
+
+
+class Cliente:
+    def __init__(self, nome):
+        self.nome = nome
+        self.carrinho = None
+
+
+    def adicionar_ao_carrinho(self, A, B, C):
+        '''
+
+        Args:
+            A: Objeto da classe Carrinho
+            B: Objeto da classe Produto
+            C: Atributo quantitativo do Objeto da classe Produto
+
+        Returns:
+
+        '''
+        self.carrinho = A
+        for produto in range(0, C+1):
+            A.lista_de_produtos.append(B.quantidade)
+            print(f' 👍 {B.nome} adicionado ao carrinho! ')
+
+    def remover_do_carrinho(self, A, B):
+        '''
+
+        Args:
+            A: Objeto da classe Carrinho
+            B: Objeto da classe Produto
+
+        Returns:
+
+        '''
+        A.lista_de_produtos.remove(B)
+        print(f' 👍 {B.nome} Removido do carrinho! ')
+
+
+    def finalizar_compra(self, c):
+        finalizar_carrinho(c)
+
+
+class Carrinho:
+    def __init__(self):
+        self.lista_de_produtos = []
+        self.total = None
+
+
+class Loja:
+    def __init__(self, nome = 'Loja'):
+        self.nome = nome
+        self.catalogo = []
+        self.lista_de_clientes = []
+        self.lista_de_funcionarios = []
+
+    def adicionar_produto(self, produto):
+        while True:
+            try:
+                qtd = int(input(f'Quantos {produto.nome} você deseja adicionar? '))
+                produto = Produto('Produto', qtd)
+                self.catalogo.append(produto)
+                print(f' 👍 {produto.nome} adicionado! ')
+                sleep(1)
+                historico_adicao(data(),produto.nome, produto.quantidade)
+                return
+            except TypeError:
+                print(' ❌ Entrada inválida. Digite um número.')
+                sleep(1)
+            except ValueError:
+                print(' ❌ Entrada inválida. Digite um número.')
+                sleep(1)
+
+    def remover_produto(self, produto):
+        while True:
+            try:
+                self.catalogo.remove(self)
+                print(f' 👍 O {produto} foi removido do sistema!  ')
+                sleep(1)
+                historico_remocao(data(), produto.nome)
+                return
+            except TypeError:
+                print(' ❌ Entrada inválida. Digite um número.')
+                sleep(1)
+            except ValueError:
+                print(' ❌ Entrada inválida. Digite um número.')
+                sleep(1)
+
+    def receber_cliente(self, pessoa):
+        self.lista_de_clientes.append(pessoa)
+
+
+class Funcionario:
+    def __init__(self, nome, senha):
+        self.nome = nome
+        self.senha = senha
+
+    def adicionando(self, objeto):
+        l.adicionar_produto(objeto)
+
+    def removendo(self, objeto):
+        l.remover_produto(objeto)
+
+
+class Gerente:
+    def __init__(self, nome, senha):
+        self.nome = nome
+        self.senha = senha
+
+    def cadastrar_funcionario(self, loja, funcionario):
+        loja.catalogo.append(funcionario)
+
+    def remover_funcionario(self, loja):
+        loja.lista_de_funcionarios.remove(mostrar_lista(listafuncionarios))
+
+
+# Objetos
+
+g = Gerente('Gerente', 24021999)
+l = Loja()
+f = Funcionario('Neandertal', 2)
+# Lista de Objetos
+
+listaprodutos = []
+listaclientes = []
+listafuncionarios = [f]
+
+menu()
